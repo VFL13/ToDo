@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Our main app
+  todo:
+    build: ./backend/
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/todos
+    ports:
+      - "8000:8000"
+    depends_on:
+        - mongo
+  # MongoDB as a service
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: "todo-db"
+      MONGO_INITDB_ROOT_USERNAME: "todo-user"
+      MONGO_INITDB_ROOT_PASSWORD: "ToDo2020"
+    volumes:
+      - ./mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongo_data:

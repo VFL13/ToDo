@@ -1,0 +1,4 @@
+# backend/requirements.txt
+fastapi[all]==0.42.0
+motor==2.0.0
+pytest==5.3.0
