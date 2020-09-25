@@ -10,7 +10,7 @@ todo_js = {
   "title": "Finish Course JS 6 hours",
   "description": "Complete Vladilen Minin's 6 Hour JavaScript Course",
   "create_date": "2020-09-24T12:05:31.477Z",
-  "status": "To Do"
+  "status": "To Do",
 }
 
 
@@ -24,7 +24,7 @@ def _insert_todo():
 
 def test_add_a_todo():
     response = _insert_todo()
-    assert response.status_code == 201, "Not able to ADD a new toto"
+    assert response.status_code == 200, "Not able to ADD a new toto"
 
 
 def test_get_all_todo():

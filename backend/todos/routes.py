@@ -58,8 +58,6 @@ async def add_todo(todo: ToDo):
     """
 
     todo_op = await DB.todo.insert_one(todo.dict())
-    print("###########################################################")
-    print(todo_op)
     if todo_op.inserted_id:
         todo = await _get_todo_or_404(todo_op.inserted_id)
         todo["id_"] = str(todo["_id"])
@@ -115,6 +113,9 @@ async def update_todo(id_: str, todo_data: ToDo):
         {"_id": ObjectId(id_)}, {"$set": todo_data.dict()}
     )
     if todo_op.modified_count:
-        return await _get_todo_or_404(id_)
+        todo = await _get_todo_or_404(id_)
+        todo['id_'] = id_
+        del todo['_id']
+        return todo
     else:
         raise HTTPException(status_code=304)
