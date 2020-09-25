@@ -47,13 +47,3 @@ async def app_shutdown():
     """
     # This does finish the DB driver connection.
     config.close_db_client()
-
-
-@app.get("/status/")
-async def get_all_actions():
-    """[summary]
-    Gets all gamer actions.
-    [description]
-    Endpoint for all actions.
-    """
-    return [{'status': 'send'}, ]
