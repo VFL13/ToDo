@@ -5,21 +5,50 @@ import yaml
 
 
 def load_config() -> dict:
-    with open('config/config.yml') as yaml_file:
-        conf = yaml.load(yaml_file.read(), Loader=yaml.SafeLoader)
+    conf = {}
+    try:
+        with open('config/config.yml') as yaml_file:
+            conf = yaml.load(yaml_file.read(), Loader=yaml.SafeLoader)
+    except FileNotFoundError:
+        with open('config/config.ci.yml') as yaml_file:
+            conf = yaml.load(yaml_file.read(), Loader=yaml.SafeLoader)
     return conf
 
 
 CONF = load_config()
+API_VERSION = CONF.get("api", {}).get("versions", {}).get("current", 'v1')
 
-DB_CLIENT = AsyncIOMotorClient(
-    host=CONF.get("databases", dict())["default"]["HOST"],
-    port=CONF.get("databases", dict())["default"]["PORT"],
-    username=CONF.get("databases", dict())["default"]["USER"],
-    password=CONF.get("databases", dict())["default"]["PASSWORD"],
-)
 
-DB = DB_CLIENT[CONF.get("databases", dict())["default"]["NAME"]]
+def _get_client_config():
+    conf = CONF
+    if conf.get("databases", {}).get("default", {}).get("USER", False) and\
+            conf.get("databases", {}).get("default", {}).get(
+                "PASSWORD", False):
+        client_conf = {
+            "host": conf.get(
+                "databases", {}).get("default", {}).get("HOST"),
+            "port": int(conf.get(
+                "databases", {}).get("default", {}).get("PORT")),
+            "username": conf.get(
+                "databases", {}).get("default", {}).get("USER"),
+            "password": conf.get(
+                "databases", {}).get("default", {}).get("PASSWORD"),
+        }
+    else:
+        client_conf = {
+            "host": conf.get(
+                "databases", {}).get("default", {}).get("HOST"),
+            "port": int(conf.get(
+                "databases", {}).get("default", {}).get("PORT")),
+        }
+    return client_conf
+
+
+DB_CLIENT = AsyncIOMotorClient(**_get_client_config())
+
+DB = DB_CLIENT[
+    CONF.get("databases", {}).get("default", {}).get("NAME")
+]
 
 
 def close_db_client():

@@ -1,14 +1,32 @@
 from fastapi import FastAPI
+
+from core.routes import core_router
 from todos.routes import todo_router
 from config import config
 
-app = FastAPI()
+api_path = f"/api/{config.API_VERSION}"
 
+app = FastAPI(
+    title="VFL13 ToDoS",
+    description="""
+    ToDo list.
+    """,
+    version="0.1",
+    openapi_url=f"{api_path}/openapi.json",
+    docs_url=f"{api_path}/docs",
+    redoc_url=None
+)
 
 app.include_router(
     todo_router,
     prefix="/todo",
     tags=["todo"],
+    responses={404: {"description": "Not found"}},
+)
+
+app.include_router(
+    core_router,
+    tags=["core"],
     responses={404: {"description": "Not found"}},
 )
 

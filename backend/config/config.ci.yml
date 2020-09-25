@@ -12,8 +12,6 @@ databases:
   default:
     ENGINE: 'mongodb'
     DRIVER: 'motor'
-    NAME: 'todo-db'
-    USER: 'todo-user'
-    PASSWORD: 'ToDo2020'
-    HOST: 'mongo'
-    PORT: 27017
+    NAME: 'todo_ci_db'
+    HOST: '127.0.0.1'
+    PORT: '27017'
