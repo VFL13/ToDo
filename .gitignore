@@ -14,7 +14,14 @@ test/
 .idea
 
 ### Mongo Data
-mongo_data/
+diagnostic.data/
+journal/
+*.wt
+mongo.lock
+storage.bson
+*.turtle
+
+
 
 ### Python template
 # Byte-compiled / optimized / DLL files
