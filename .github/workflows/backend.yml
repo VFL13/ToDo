@@ -21,19 +21,9 @@ jobs:
         python -m pip install --upgrade pip
         cd backend/
         pip install -r requirements.txt
-# sudo docker run --name mongo -d -p 27017:27017 mongo
-    - name: Create mongo Docker container
-        id: build_mongo_docker
-        uses: DigiPie/mongo-action@v1.0.0
-        with:
-          image-version: latest
-          port: 27017
-          - name: Install mongodb-clients
-            id: install_mongodb_clients
-            run: sudo apt install mongodb-clients
-          - name: Test mongo connection
-            id: test_mongo_connection
-            run: "sudo mongo localhost:27017"
+        mkdir ~/mongo_data
+        sudo docker run --name mongo -d -p 27017:27017 -v ~/mongo_data:/data/db mongo
+        sudo curl localhost:27018
     - name: Lint with flake8
       run: |
         pip install flake8
