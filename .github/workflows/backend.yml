@@ -22,7 +22,14 @@ jobs:
         cd backend/
         pip install -r requirements.txt
         mkdir ~/mongo_data
-        sudo docker run --name mongo -d -p 27017:27017 -v ~/mongo_data:/data/db mongo
+#        sudo docker run --name mongo -d -p 27017:27017 -v ~/mongo_data:/data/db mongo
+    - name: Start Mongo With password
+      uses: getong/mongo-action@v1.1
+        with:
+          mongo version: '4.2-bionic'
+          host port: 27017
+          mongo username: 'todo-user'
+          mongo password: 'ToDo2020'
     - name: Lint with flake8
       run: |
         pip install flake8
