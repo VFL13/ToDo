@@ -22,7 +22,7 @@ jobs:
         cd backend/
         pip install -r requirements.txt
         sudo docker volume create mongo_data
-        sudo docker run --name mongo -d -p 27017:27017 -v mongo_data:/data/db mongo
+        sudo docker run --name mongo -d -p 27017:27017 -v mongo_data:/data/db -e MONGO_INITDB_ROOT_USERNAME=todo-user -e MONGO_INITDB_ROOT_PASSWORD=ToDo2020 mongo
         sudo docker ps
         sudo docker volume ls
     - name: Lint with flake8
